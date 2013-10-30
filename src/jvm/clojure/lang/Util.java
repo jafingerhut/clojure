@@ -21,7 +21,7 @@ import java.lang.ref.SoftReference;
 import java.lang.ref.ReferenceQueue;
 
 public class Util{
-static public final int SEQUENCE_HASH_MULTIPLIER = 524287;
+static public final int SEQUENCE_HASH_MULTIPLIER = 122949829;
 static public boolean equiv(Object k1, Object k2){
 	if(k1 == k2)
 		return true;
