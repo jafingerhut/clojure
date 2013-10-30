@@ -112,6 +112,8 @@ public int hasheq(){
 		for(ISeq s = seq(); s != null; s = s.next())
 			{
 			Object e = s.first();
+			//			System.err.format("    e=%s (h e)=%08x (xor-shift-32 (h e))=%08x\n", e, Util.hasheq(e), Util.xorShift32(Util.hasheq(e)));
+			//			System.err.flush();
 			hash +=  Util.xorShift32(Util.hasheq(e));
 			}
 		this._hasheq = hash;		
