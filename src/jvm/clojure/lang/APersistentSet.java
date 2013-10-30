@@ -112,7 +112,7 @@ public int hasheq(){
 		for(ISeq s = seq(); s != null; s = s.next())
 			{
 			Object e = s.first();
-			hash +=  Util.hasheq(e);
+			hash +=  Util.xorShift32(Util.hasheq(e));
 			}
 		this._hasheq = hash;		
 	}

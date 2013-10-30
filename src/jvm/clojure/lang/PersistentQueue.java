@@ -87,7 +87,7 @@ public int hasheq() {
 		int hash = 1;
 		for(ISeq s = seq(); s != null; s = s.next())
 			{
-			hash = 31 * hash + Util.hasheq(s.first());
+			hash = Util.SEQUENCE_HASH_MULTIPLIER * hash + Util.hasheq(s.first());
 			}
 		this._hasheq = hash;
 		}

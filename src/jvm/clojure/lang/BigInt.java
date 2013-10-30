@@ -27,7 +27,7 @@ final public static BigInt ONE = new BigInt(1,null);
 //must follow Long
 public int hashCode(){
 	if(bipart == null)
-		return (int) (this.lpart ^ (this.lpart >>> 32));
+		return Util.longHashMunge(lpart);
 	return bipart.hashCode();
 }
 

@@ -73,7 +73,12 @@ IFn findFnFor(Class c){
         }
     else
         {
+	// When tracking down all places where Util.hash() is
+	// called from, it is a bit noisy with the number of calls
+	// from here, so disable them.
+	// Util.dbgHashEnabled = false;
         int idx = ((Util.hash(c) >> shift) & mask) << 1;
+	// Util.dbgHashEnabled = true;
         if(idx < table.length && table[idx] == c)
             {
             Entry e = ((Entry) table[idx + 1]);

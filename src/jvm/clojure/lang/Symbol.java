@@ -67,7 +67,12 @@ static public Symbol intern(String nsname){
 private Symbol(String ns_interned, String name_interned){
 	this.name = name_interned;
 	this.ns = ns_interned;
+	// When tracking down all places where Util.hash() is
+	// called from, it is a bit noisy with the number of calls
+	// from here, so disable them.
+	// Util.dbgHashEnabled = false;
 	this.hash = Util.hashCombine(name.hashCode(), Util.hash(ns));
+	// Util.dbgHashEnabled = true;
 	this._meta = null;
 }
 
@@ -99,7 +104,12 @@ private Symbol(IPersistentMap meta, String ns, String name){
 	this.name = name;
 	this.ns = ns;
 	this._meta = meta;
+	// When tracking down all places where Util.hash() is
+	// called from, it is a bit noisy with the number of calls
+	// from here, so disable them.
+	// Util.dbgHashEnabled = false;
 	this.hash = Util.hashCombine(name.hashCode(), Util.hash(ns));
+	// Util.dbgHashEnabled = true;
 }
 
 public int compareTo(Object o){

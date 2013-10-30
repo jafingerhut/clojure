@@ -141,7 +141,7 @@
       (if (= i cnt)
         hash
         (let [val (.nth this i)]
-          (recur (unchecked-add-int (unchecked-multiply-int 31 hash) 
+          (recur (unchecked-add-int (unchecked-multiply-int clojure.lang.Util/SEQUENCE_HASH_MULTIPLIER hash) 
                                 (clojure.lang.Util/hash val)) 
                  (inc i))))))
 

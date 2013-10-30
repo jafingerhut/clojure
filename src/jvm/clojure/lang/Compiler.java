@@ -8199,7 +8199,7 @@ public static class CaseExpr implements Expr, MaybePrimitiveExpr{
 	final static Type NUMBER_TYPE = Type.getType(Number.class);
 	final static Method intValueMethod = Method.getMethod("int intValue()");
 
-	final static Method hashMethod = Method.getMethod("int hash(Object)");
+	final static Method hasheqMethod = Method.getMethod("int hasheq(Object)");
 	final static Method hashCodeMethod = Method.getMethod("int hashCode()");
 	final static Method equivMethod = Method.getMethod("boolean equiv(Object, Object)");
     final static Keyword compactKey = Keyword.intern(null, "compact");
@@ -8402,7 +8402,7 @@ public static class CaseExpr implements Expr, MaybePrimitiveExpr{
 
     private void emitExprForHashes(ObjExpr objx, GeneratorAdapter gen){
         expr.emit(C.EXPRESSION, objx, gen);
-        gen.invokeStatic(UTIL_TYPE,hashMethod);
+        gen.invokeStatic(UTIL_TYPE,hasheqMethod);
         emitShiftMask(gen);
     }
 

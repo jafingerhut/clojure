@@ -21,6 +21,7 @@ import java.lang.ref.SoftReference;
 import java.lang.ref.ReferenceQueue;
 
 public class Util{
+static public final int SEQUENCE_HASH_MULTIPLIER = 524287;
 static public boolean equiv(Object k1, Object k2){
 	if(k1 == k2)
 		return true;
@@ -155,7 +156,14 @@ static public int compare(Object k1, Object k2){
 	return -1;
 }
 
+static public boolean dbgHashEnabled = false;
+
 static public int hash(Object o){
+    if (dbgHashEnabled) {
+	System.err.println("dbg: hash on obj with class " + ((o == null) ? "null" : o.getClass().toString()) + "  o=" + o);
+	Thread.dumpStack();
+	System.err.flush();
+    }
 	if(o == null)
 		return 0;
 	return o.hashCode();
@@ -179,6 +187,21 @@ static public int hashCombine(int seed, int hash){
 	//a la boost
 	seed ^= hash + 0x9e3779b9 + (seed << 6) + (seed >> 2);
 	return seed;
+}
+
+static public int longHashMunge(long a){
+	a ^= (a << 13);
+	a ^= (a >>> 7);
+	a ^= (a << 17);
+	a ^= (a >>> 32);
+	return (int) a;
+}
+
+static public int xorShift32(int i){
+	i ^= (i << 13);
+	i ^= (i >>> 17);
+	i ^= (i << 5);
+	return i;
 }
 
 static public boolean isPrimitive(Class c){
