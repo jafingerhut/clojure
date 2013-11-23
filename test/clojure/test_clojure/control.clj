@@ -418,4 +418,11 @@
       (are [result input] (= result (test-fn input))
            :piece-of-throw-expr 'throw
            :piece-of-throw-expr '[RuntimeException. "boom"]
-           :no-match nil))))
+           :no-match nil)))
+  (testing "test that case uses hasheq"
+    (let [test-fn (fn [x]
+                    (case x
+                      (byte -5) "byte -5"
+                      "other"))]
+      (is (= "other" (test-fn 5)))
+      (is (= "byte -5" (test-fn (byte -5)))))))
