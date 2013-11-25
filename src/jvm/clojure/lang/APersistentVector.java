@@ -160,7 +160,7 @@ public int hasheq(){
 	while(i.hasNext())
 		{
 		Object obj = i.next();
-		hash = 31 * hash + Util.hasheq(obj);
+		hash = Util.SEQUENCE_HASH_MULTIPLIER * hash + Util.hasheq(obj);
 		}
 	_hasheq = hash;
 	}

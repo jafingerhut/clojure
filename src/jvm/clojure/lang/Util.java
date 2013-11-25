@@ -21,6 +21,7 @@ import java.lang.ref.SoftReference;
 import java.lang.ref.ReferenceQueue;
 
 public class Util{
+static public final int SEQUENCE_HASH_MULTIPLIER = -1640531535;
 static public boolean equiv(Object k1, Object k2){
 	if(k1 == k2)
 		return true;
@@ -179,6 +180,27 @@ static public int hashCombine(int seed, int hash){
 	//a la boost
 	seed ^= hash + 0x9e3779b9 + (seed << 6) + (seed >> 2);
 	return seed;
+}
+
+static public int longHashMunge(long a){
+	// Source: "Xorshift RNGs" by George Marsaglia, just before the
+	// beginning of Section 3.1.
+	// http://www.jstatsoft.org/v08/i14/paper
+	a ^= (a << 13);
+	a ^= (a >>> 7);
+	a ^= (a << 17);
+	a ^= (a >>> 32);
+	return (int) a;
+}
+
+static public int xorShift32(int i){
+	// Source: "Xorshift RNGs" by George Marsaglia, just before the
+	// beginning of Section 3.1.
+	// http://www.jstatsoft.org/v08/i14/paper
+	i ^= (i << 13);
+	i ^= (i >>> 17);
+	i ^= (i << 5);
+	return i;
 }
 
 static public boolean isPrimitive(Class c){

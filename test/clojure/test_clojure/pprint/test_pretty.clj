@@ -294,26 +294,22 @@ It is implemented with a number of custom enlive templates.\"
   (binding [*print-length* 8] (with-out-str (pprint [1 2 3 4 5 6])))
   "[1 2 3 4 5 6]\n"
 
-  ;; This set of tests isn't that great cause it assumes that the set remains
-  ;; ordered for printing. This is currently (1.3) true, but no future
-  ;; guarantees
-  (binding [*print-length* 1] (with-out-str (pprint #{1 2 3 4 5 6})))
+  (binding [*print-length* 1] (with-out-str (pprint (sorted-set 1 2 3 4 5 6))))
   "#{1 ...}\n"
-  (binding [*print-length* 2] (with-out-str (pprint #{1 2 3 4 5 6})))
+  (binding [*print-length* 2] (with-out-str (pprint (sorted-set 1 2 3 4 5 6))))
   "#{1 2 ...}\n"
-  (binding [*print-length* 6] (with-out-str (pprint #{1 2 3 4 5 6})))
+  (binding [*print-length* 6] (with-out-str (pprint (sorted-set 1 2 3 4 5 6))))
   "#{1 2 3 4 5 6}\n"
-  (binding [*print-length* 8] (with-out-str (pprint #{1 2 3 4 5 6})))
+  (binding [*print-length* 8] (with-out-str (pprint (sorted-set 1 2 3 4 5 6))))
   "#{1 2 3 4 5 6}\n"
 
-  ;; See above comment and apply to this map :)
-  (binding [*print-length* 1] (with-out-str (pprint {1 2, 3 4, 5 6, 7 8, 9 10, 11 12})))
+  (binding [*print-length* 1] (with-out-str (pprint (sorted-map 1 2, 3 4, 5 6, 7 8, 9 10, 11 12))))
   "{1 2, ...}\n"
-  (binding [*print-length* 2] (with-out-str (pprint {1 2, 3 4, 5 6, 7 8, 9 10, 11 12})))
+  (binding [*print-length* 2] (with-out-str (pprint (sorted-map 1 2, 3 4, 5 6, 7 8, 9 10, 11 12))))
   "{1 2, 3 4, ...}\n"
-  (binding [*print-length* 6] (with-out-str (pprint {1 2, 3 4, 5 6, 7 8, 9 10, 11 12})))
+  (binding [*print-length* 6] (with-out-str (pprint (sorted-map 1 2, 3 4, 5 6, 7 8, 9 10, 11 12))))
   "{1 2, 3 4, 5 6, 7 8, 9 10, 11 12}\n"
-  (binding [*print-length* 8] (with-out-str (pprint {1 2, 3 4, 5 6, 7 8, 9 10, 11 12})))
+  (binding [*print-length* 8] (with-out-str (pprint (sorted-map 1 2, 3 4, 5 6, 7 8, 9 10, 11 12))))
   "{1 2, 3 4, 5 6, 7 8, 9 10, 11 12}\n"
 
 

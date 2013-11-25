@@ -989,7 +989,7 @@ static int hasheq(Number x){
 		|| xc == Byte.class)
 		{
 		long lpart = x.longValue();
-		return (int) (lpart ^ (lpart >>> 32));
+		return Util.longHashMunge(lpart);
 		}
 	if(xc == BigDecimal.class)
 		{

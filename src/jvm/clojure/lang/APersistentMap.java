@@ -125,7 +125,7 @@ static public int mapHasheq(IPersistentMap m) {
 		{
 		Map.Entry e = (Map.Entry) s.first();
 		hash += Util.hasheq(e.getKey()) ^
-				Util.hasheq(e.getValue());
+				Util.xorShift32(Util.hasheq(e.getValue()));
 		}
 	return hash;
 }

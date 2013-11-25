@@ -366,6 +366,7 @@
           ^Object y (Long. -1)]
       (is (= :diff (case x -1 :oops :diff)))
       (is (= :same (case y -1 :same :oops)))))
+(comment   ;; TBD: remove comment after determining new integer pair that have same hash value
   (testing "test correct behavior on hash collision"
     (is (== (hash 1) (hash 9223372039002259457N)))
     (are [result input] (= result (case input
@@ -407,6 +408,7 @@
     (should-print-err-message
      #"Performance warning, .*:\d+ - hash collision of some case test constants; if selected, those entries will be tested sequentially..*\r?\n"
      (case 1 1 :long 9223372039002259457N :big 2)))
+)
   (testing "test constants are *not* evaluated"
     (let [test-fn
           ;; never write code like this...
