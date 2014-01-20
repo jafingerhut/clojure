@@ -155,14 +155,22 @@ public int hashCode(){
 
 public int hasheq(){
 	if(_hasheq == -1) {
-	int hash = 1;
-	Iterator i = iterator();
-	while(i.hasNext())
-		{
-		Object obj = i.next();
-		hash = 31 * hash + Util.hasheq(obj);
-		}
-	_hasheq = hash;
+		int n = 0;
+		// This line makes maps have same hash code as Scala,
+		// but messes up hash equality between map entries and
+		// vectors, which is needed for some Clojure unit
+		// tests to pass.
+		//int h = (this instanceof IMapEntry) ? Util.productSeed : Util.seqSeed;
+		int h = Util.seqSeed;
+		Iterator i = iterator();
+		while(i.hasNext())
+			{
+			Object obj = i.next();
+			h = Util.murmurHash3Mix(h, Util.hasheq(obj));
+			n += 1;
+			}
+		h = Util.murmurHash3FinalizeHash(h, n);
+		_hasheq = h;
 	}
 	return _hasheq;
 }

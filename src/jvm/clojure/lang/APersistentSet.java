@@ -107,15 +107,8 @@ public int hashCode(){
 }
 
 public int hasheq(){
-	if(_hasheq == -1){
-		int hash = 0;
-		for(ISeq s = seq(); s != null; s = s.next())
-			{
-			Object e = s.first();
-			hash +=  Util.hasheq(e);
-			}
-		this._hasheq = hash;		
-	}
+	if(_hasheq == -1)
+		_hasheq = Util.murmurHash3UnorderedHash(this, Util.setSeed);
 	return _hasheq;		
 }
 

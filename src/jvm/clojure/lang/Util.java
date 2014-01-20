@@ -155,6 +155,126 @@ static public int compare(Object k1, Object k2){
 	return -1;
 }
 
+/* May optionally be used as the last mixing step.  Is a little bit
+ * faster than mix, as it does no further mixing of the resulting
+ * hash.  For the last element this is not necessary as the hash is
+ * thoroughly mixed during finalization anyway. */
+static public int murmurHash3MixLast(int hash, int data){
+	int k = data;
+	k *= 0xcc9e2d51;
+	k = Integer.rotateLeft(k, 15);
+	k *= 0x1b873593;
+	return (hash ^ k);
+}
+
+/* Mix in a block of data into an intermediate hash value. */
+static public int murmurHash3Mix(int hash, int data){
+	int h = murmurHash3MixLast(hash, data);
+	h = Integer.rotateLeft(h, 13);
+	return (h * 5 + 0xe6546b64);
+}
+
+/** Force all bits of the hash to avalanche. Used for finalizing the hash. */
+static public int murmurHash3Avalanche(int hash){
+	int h = hash;
+	h ^= h >>> 16;
+	h *= 0x85ebca6b;
+	h ^= h >>> 13;
+	h *= 0xc2b2ae35;
+	h ^= h >>> 16;
+	return h;
+}
+
+/* Finalize a hash to incorporate the length and make sure all bits
+ * avalanche. */
+static public int murmurHash3FinalizeHash(int hash, int length){
+	return murmurHash3Avalanche(hash ^ length);
+}
+
+/* Compute the hash of a product */
+static public int murmurHash3ProductHash(Object x, int seed){
+	APersistentVector v = (APersistentVector) x;
+	int arr = v.count();
+	int h = seed;
+	int i = 0;
+	while (i < arr) {
+	    h = murmurHash3Mix(h, Util.hasheq(v.nth(i)));
+	    i += 1;
+	}
+	return murmurHash3FinalizeHash(h, arr);
+}
+
+/* Compute the hash of a string */
+static public int murmurHash3StringHash(String str, int seed){
+	if (str == null) return 0;
+	int h = seed;
+	int i = 0;
+	int len = str.length();
+	while (i + 1 < len) {
+		int data = (((int) str.charAt(i)) << 16) + ((int) str.charAt(i + 1));
+		h = murmurHash3Mix(h, data);
+		i += 2;
+	}
+	if (i < len)
+		h = murmurHash3MixLast(h, (int) str.charAt(i));
+	return murmurHash3FinalizeHash(h, len);
+}
+
+/* Compute a hash that is symmetric in its arguments - that is a hash
+ * where the order of appearance of elements does not matter.  This is
+ * useful for hashing sets, for example. */
+static public int murmurHash3UnorderedHash(Object xs, int seed){
+	int a = 0;
+	int b = 0;
+	int n = 0;
+	int c = 1;
+	for (ISeq s = RT.seq(xs); s != null; s = s.next()) {
+		int h = Util.hasheq(s.first());
+		a += h;
+		b ^= h;
+		if (h != 0)
+			c *= h;
+		n += 1;
+	}
+	int h = seed;
+	h = murmurHash3Mix(h, a);
+	h = murmurHash3Mix(h, b);
+	h = murmurHash3MixLast(h, c);
+	return murmurHash3FinalizeHash(h, n);
+}
+
+/* Compute a hash that depends on the order of its arguments. */
+static public int murmurHash3OrderedHash(Object xs, int seed){
+	int n = 0;
+	int h = seed;
+	for (ISeq s = RT.seq(xs); s != null; s = s.next()) {
+		h = murmurHash3Mix(h, Util.hasheq(s.first()));
+		n += 1;
+	}
+	return murmurHash3FinalizeHash(h, n);
+}
+
+/* Compute the hash of an array. */
+
+static public int murmurHash3ArrayHash(Object a[], int seed){
+	int h = seed;
+	int i = 0;
+	while (i < a.length) {
+		h = murmurHash3Mix(h, Util.hasheq(a[i]));
+		i += 1;
+	}
+	return murmurHash3FinalizeHash(h, a.length);
+}
+
+//public static final int arraySeed       = 0x3c074a61;
+public static final int stringSeed      = 0xf7ca7fd2;
+//public static final int productSeed     = 0xcafebabe;
+//public static final int symmetricSeed   = 0xb592f7ae;
+//public static final int traversableSeed = 0xe73a8b15;
+public static final int seqSeed         = hasheq("Seq");
+public static final int mapSeed         = hasheq("Map");
+public static final int setSeed         = hasheq("Set");
+
 static public int hash(Object o){
 	if(o == null)
 		return 0;

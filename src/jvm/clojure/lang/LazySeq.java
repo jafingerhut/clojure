@@ -110,8 +110,8 @@ public int hashCode(){
 public int hasheq(){
 	ISeq s = seq();
 	if(s == null)
-		return 1;
-	return Util.hasheq(seq());
+		return Util.seqSeed;
+	return Util.hasheq(s);
 }
 
 public boolean equals(Object o){

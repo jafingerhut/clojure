@@ -1116,7 +1116,7 @@
        [] {:a 1 :b 2}
        [:a 1 :b 2] (seq {:a 1 :b 2})
        [] {[:a :b] 1 :c 2}
-       [:a :b 1 :c 2] (seq {[:a :b] 1 :c 2})
+       [:c 2 :a :b 1] (seq {[:a :b] 1 :c 2})  ; order depends on hash function
        [:a 1 2 :b 3] (seq {:a [1 2] :b 3})
        ;Strings
        [] "12345"
