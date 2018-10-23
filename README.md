@@ -13,11 +13,11 @@ many JAR files, those needed by Maven to build Clojure, to be
 downloaded and put there.
 
 ```bash
-% git clone https://github.com/jafingerhut/clojure
-% cd clojure
-% git checkout undefined-behavior
-% mvn -Dmaven.test.skip=true package
-% clj -Sdeps '{:deps {org.clojure/clojure {:local/root "target/clojure-1.10.0-master-SNAPSHOT.jar"}}}'
+git clone https://github.com/jafingerhut/clojure
+cd clojure
+git checkout undefined-behavior
+mvn -Dmaven.test.skip=true package
+clj -Sdeps '{:deps {org.clojure/clojure {:local/root "target/clojure-1.10.0-master-SNAPSHOT.jar"}}}'
 ```
 
 Then in the Clojure REPL:
