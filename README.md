@@ -47,3 +47,10 @@ Hah!
 Just once, I would like to see my program do this, and my life will be complete.
 For those who are curious: https://www.youtube.com/watch?v=MsROL4Kf8QY (edited)
 ```
+
+
+## More details
+
++ http://clojuredocs.org/clojure.set/difference
++ https://dev.clojure.org/jira/browse/CLJ-1953
++ https://dev.clojure.org/jira/browse/CLJ-2287
