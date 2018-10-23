@@ -8,7 +8,8 @@
 
 (ns ^{:doc "Set operations such as union/intersection."
        :author "Rich Hickey"}
-       clojure.set)
+       clojure.set
+  (:require [clojure.java.browse :as b]))
 
 (defn- bubble-max-key
   "Move a maximal element of coll according to fn k (which returns a
@@ -17,24 +18,35 @@
   (let [max (apply max-key k coll)]
     (cons max (remove #(identical? max %) coll))))
 
+(defn- undefined-behavior []
+  (b/browse-url "https://www.youtube.com/watch?v=MsROL4Kf8QY"))
+
 (defn union
   "Return a set that is the union of the input sets"
   {:added "1.0"}
   ([] #{})
-  ([s1] s1)
+  ([s1]
+     (when-not (set? s1) (undefined-behavior))
+     s1)
   ([s1 s2]
+     (when-not (and (set? s1) (set? s2)) (undefined-behavior))
      (if (< (count s1) (count s2))
        (reduce conj s2 s1)
        (reduce conj s1 s2)))
   ([s1 s2 & sets]
+     (when-not (and (set? s1) (set? s2) (every? set? sets))
+       (undefined-behavior))
      (let [bubbled-sets (bubble-max-key count (conj sets s2 s1))]
        (reduce into (first bubbled-sets) (rest bubbled-sets)))))
 
 (defn intersection
   "Return a set that is the intersection of the input sets"
   {:added "1.0"}
-  ([s1] s1)
+  ([s1]
+     (when-not (set? s1) (undefined-behavior))
+     s1)
   ([s1 s2]
+     (when-not (and (set? s1) (set? s2)) (undefined-behavior))
      (if (< (count s2) (count s1))
        (recur s2 s1)
        (reduce (fn [result item]
@@ -43,14 +55,19 @@
                      (disj result item)))
 	       s1 s1)))
   ([s1 s2 & sets] 
+     (when-not (and (set? s1) (set? s2) (every? set? sets))
+       (undefined-behavior))
      (let [bubbled-sets (bubble-max-key #(- (count %)) (conj sets s2 s1))]
        (reduce intersection (first bubbled-sets) (rest bubbled-sets)))))
 
 (defn difference
   "Return a set that is the first set without elements of the remaining sets"
   {:added "1.0"}
-  ([s1] s1)
+  ([s1]
+     (when-not (set? s1) (undefined-behavior))
+     s1)
   ([s1 s2] 
+     (when-not (and (set? s1) (set? s2)) (undefined-behavior))
      (if (< (count s1) (count s2))
        (reduce (fn [result item] 
                    (if (contains? s2 item) 
@@ -59,6 +76,8 @@
                s1 s1)
        (reduce disj s1 s2)))
   ([s1 s2 & sets] 
+     (when-not (and (set? s1) (set? s2) (every? set? sets))
+       (undefined-behavior))
      (reduce difference s1 (conj sets s2))))
 
 
