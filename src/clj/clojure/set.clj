@@ -19,7 +19,19 @@
     (cons max (remove #(identical? max %) coll))))
 
 (defn- undefined-behavior []
-  (b/browse-url "https://www.youtube.com/watch?v=MsROL4Kf8QY"))
+  (let [urls ["https://www.destroyallsoftware.com/talks/wat"
+              "http://blog.llvm.org/2011/05/what-every-c-programmer-should-know.html"
+              "https://www.geeksforgeeks.org/undefined-behavior-c-cpp"
+              "http://www.catb.org/jargon/html/N/nasal-demons.html"
+              "https://nullprogram.com/blog/2018/07/20/"
+              "https://www.urbandictionary.com/define.php?term=nasal%20demons"
+              "http://talkchess.com/forum3/viewtopic.php?t=50186"
+              "https://markshroyer.com/2012/06/c-both-true-and-false/"
+              "https://en.wikipedia.org/wiki/Undefined_behavior"
+              "https://www.youtube.com/watch?v=yG1OZ69H_-o"]]
+    (if (< (rand-int 100) 66)
+      (b/browse-url "https://www.youtube.com/watch?v=MsROL4Kf8QY")
+      (b/browse-url (rand-nth urls)))))
 
 (defn union
   "Return a set that is the union of the input sets"
