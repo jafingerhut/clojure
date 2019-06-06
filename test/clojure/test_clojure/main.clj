@@ -12,7 +12,8 @@
 (ns clojure.test-clojure.main
   (:use clojure.test
         [clojure.test-helper :only [platform-newlines]])
-  (:require [clojure.main :as main]))
+  (:require [clojure.main :as main]
+            [clojure.string :as str]))
 
 (deftest eval-opt
   (testing "evals and prints forms"
@@ -56,7 +57,8 @@
             (.setStackTrace (into-array java.lang.StackTraceElement nil)))
         tr-data (-> e Throwable->map main/ex-triage)]
     (is (= tr-data #:clojure.error{:phase :execution, :class 'java.lang.Error, :cause "xyz"}))
-    (is (= (main/ex-str tr-data) "Execution error (Error) at (REPL:1).\nxyz\n"))))
+    (is (= (str/split-lines (main/ex-str tr-data))
+           ["Execution error (Error) at (REPL:1)." "xyz"]))))
 
 (defn s->lpr
   [s]
